@@ -1,0 +1,7 @@
+/**
+ * KeyValueStoreHandler
+ */
+public class KeyValueStoreHandler {
+
+    
+}
