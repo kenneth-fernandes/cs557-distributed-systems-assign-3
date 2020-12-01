@@ -1,3 +1,4 @@
+
 /**
  * KeyValueStoreHandler
  */
@@ -12,7 +13,7 @@ import org.apache.thrift.protocol.TProtocol;
 
 import keyvalstore.*;
 
-public class KeyValueStoreHandler  implements KeyValueStore.Iface {
+public class KeyValueStoreHandler implements KeyValueStore.Iface {
     private String ipAddr;
     private int portNum;
 
@@ -20,5 +21,14 @@ public class KeyValueStoreHandler  implements KeyValueStore.Iface {
         this.ipAddr = ipAddr;
         this.portNum = portNum;
         System.out.println("KeyValueStoreHandler constructor");
+    }
+
+    @Override
+    public boolean put(int key, String value, Request request, ReplicaID replicaID) throws SystemException, TException {
+        return true;
+    }
+
+    public java.lang.String get(int key, Request request, ReplicaID replicaID) throws SystemException, TException {
+        return "";
     }
 }
