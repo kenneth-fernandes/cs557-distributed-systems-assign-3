@@ -20,7 +20,8 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
     private Map<Integer, String> keyValueData;
     private List<NodeInfo> nodesInfo;
 
-    public KeyValueStoreHandler(String ipAddr, int portNum, List<NodeInfo> nodesInfoIn) throws SystemException, TException {
+    public KeyValueStoreHandler(String ipAddr, int portNum, List<NodeInfo> nodesInfoIn)
+            throws SystemException, TException {
         this.ipAddr = ipAddr;
         this.portNum = portNum;
         nodesInfo = nodesInfoIn;
