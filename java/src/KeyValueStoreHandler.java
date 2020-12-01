@@ -3,24 +3,26 @@
  * KeyValueStoreHandler
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.thrift.TException;
-import org.apache.thrift.transport.TSSLTransportFactory;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
 
-
-import keyvalstore.*;
+import keyvalstore.KeyValueStore;
+import keyvalstore.ReplicaID;
+import keyvalstore.Request;
+import keyvalstore.SystemException;
 
 public class KeyValueStoreHandler implements KeyValueStore.Iface {
     private String ipAddr;
     private int portNum;
+    private Map<String, String> nodesInfo;
+    private Map<Integer, String> keyValueData;
 
-    public KeyValueStoreHandler(String ipAddr, int portNum) throws SystemException, TException {
+    public KeyValueStoreHandler(String ipAddr, int portNum, Map<String, String> nodesInfoIn) throws SystemException, TException {
         this.ipAddr = ipAddr;
         this.portNum = portNum;
+        nodesInfo = nodesInfoIn;
         System.out.println("KeyValueStoreHandler constructor");
     }
 
