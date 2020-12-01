@@ -1,4 +1,4 @@
-import keyvalstore.*;
+
 
 import java.net.InetAddress;
 
@@ -10,6 +10,8 @@ import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
+
+import keyvalstore.*;
 
 public class Server {
 
