@@ -12,7 +12,7 @@ import org.apache.thrift.protocol.TProtocol;
 
 import keyvalstore.*;
 
-public class KeyValueStoreHandler {
+public class KeyValueStoreHandler  implements KeyValueStore.Iface {
     private String ipAddr;
     private int portNum;
 

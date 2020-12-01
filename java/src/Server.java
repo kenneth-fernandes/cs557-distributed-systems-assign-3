@@ -1,5 +1,7 @@
 import keyvalstore.*;
 
+import java.net.InetAddress;
+
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
