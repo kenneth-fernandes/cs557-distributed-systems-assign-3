@@ -17,7 +17,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
     private String ipAddr;
     private int portNum;
 
-    KeyValueStoreHandler(String ipAddr, int portNum) {
+    KeyValueStoreHandler(String ipAddr, int portNum) throws SystemException, TException {
         this.ipAddr = ipAddr;
         this.portNum = portNum;
         System.out.println("KeyValueStoreHandler constructor");
