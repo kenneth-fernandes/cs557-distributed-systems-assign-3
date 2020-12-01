@@ -1,5 +1,3 @@
-
-
 import java.net.InetAddress;
 
 import org.apache.thrift.server.TServer;
@@ -16,7 +14,7 @@ import keyvalstore.*;
 public class Server {
 
     public static KeyValueStoreHandler handler;
-    public static KeyValueStoreHandler.Processor processor;
+    public static KeyValueStore.Processor processor;
     public static int portNum;
     public static String ipAddr;
     
