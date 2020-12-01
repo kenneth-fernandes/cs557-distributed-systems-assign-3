@@ -24,7 +24,7 @@ public class Server {
           portNum = Integer.valueOf(args[0]);
           ipAddr = InetAddress.getLocalHost().getHostAddress();
           handler = new KeyValueStoreHandler(ipAddr, portNum);
-          processor = new KeyValueStoreHandler.Processor(handler);
+          processor = new KeyValueStore.Processor(handler);
     
           Runnable simple = new Runnable() {
             public void run() {
@@ -37,7 +37,7 @@ public class Server {
         }
       }
     
-      public static void simple(KeyValueStoreHandler.Processor processor) {
+      public static void simple(KeyValueStore.Processor processor) {
         try {
           TServerTransport serverTransport = new TServerSocket(portNum);
           TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
