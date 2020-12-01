@@ -12,7 +12,7 @@
 ---
 
 ## Compilation and Execution process:
-- Navigate to the folder "cs457-557-fall2020-pa3-achaud15-kferna11" and run the following commands:
+- Navigate to the folder "cs457-557-fall2020-pa3-achaud15-kferna11/java" and run the following commands:
 ```commandline
 $> bash
 $> export PATH=$PATH:/home/cs557-inst/local/bin
@@ -21,8 +21,7 @@ $> export PATH=$PATH:/home/cs557-inst/local/bin
 ```commandline
 $> thrift -gen java keyvalstore.thrift
 ```
-- Once the gen-java folder is generated, navigate to the following path "cs457-557-fall2020-pa3-achaud15-kferna11/java".
-
+- The gen-java folder would be generated.
 - Compile the programs by executing the following command:
 ```commandline
 $> make
