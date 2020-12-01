@@ -28,7 +28,8 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
         return true;
     }
 
-    public java.lang.String get(int key, Request request, ReplicaID replicaID) throws SystemException, TException {
+    @Override
+    public String get(int key, Request request, ReplicaID replicaID) throws SystemException, TException {
         return "";
     }
 }
