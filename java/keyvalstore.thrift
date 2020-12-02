@@ -10,9 +10,9 @@ enum ConsistencyLevel {
 }
 
 struct Request {
-  1: ConsistencyLevel level;
-	2: bool isCoordinator;
-}
+  1: required ConsistencyLevel level;
+	2: required bool isCoordinator;
+  3: optional i64 timestamp;
 
 struct ReplicaID {
   1: string id;
