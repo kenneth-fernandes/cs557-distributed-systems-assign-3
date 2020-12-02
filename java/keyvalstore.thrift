@@ -31,7 +31,7 @@ service KeyValueStore {
   bool put(1: i32 key, 2: string value, 3: Request request, 4: ReplicaID replicaID)
     throws (1: SystemException systemException),
 
-  string get(1: i32 key, 2: Request request, 3: ReplicaID replicaID)
+  Value get(1: i32 key, 2: Request request, 3: ReplicaID replicaID)
     throws (1: SystemException systemException),
 
   Value getHints(1: string ip, 2: i32 port)
