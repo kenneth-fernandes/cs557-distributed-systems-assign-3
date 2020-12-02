@@ -15,61 +15,61 @@ import keyvalstore.KeyValueStore;
 
 public class Server {
 
-  public static KeyValueStoreHandler handler;
-  public static KeyValueStore.Processor processor;
-  public static int portNum;
-  public static String ipAddr;
-  private static BufferedReader reader;
+	public static KeyValueStoreHandler handler;
+	public static KeyValueStore.Processor processor;
+	public static int portNum;
+	public static String ipAddr;
+	private static BufferedReader reader;
 
-  public static void main(String[] args) {
-    try {
+	public static void main(String[] args) {
+		try {
 
-      String workingDirectory = System.getProperty("user.dir") + File.separator + "config.txt";
-      String line = "";
-      List<NodeInfo> nodesInfo = new ArrayList<NodeInfo>();
-      reader = new BufferedReader(new FileReader(new File(workingDirectory)));
-      System.out.println(workingDirectory);
+			String workingDirectory = System.getProperty("user.dir") + File.separator + "config.txt";
+			String line = "";
+			List<NodeInfo> nodesInfo = new ArrayList<NodeInfo>();
+			reader = new BufferedReader(new FileReader(new File(workingDirectory)));
+			System.out.println(workingDirectory);
 
-      while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) {
 
-        NodeInfo node = new NodeInfo();
-        String[] input = line.split(" ");
+				NodeInfo node = new NodeInfo();
+				String[] input = line.split(" ");
 
-        node.setIp(input[0]);
-        node.setPort(input[1]);
-        node.setLowRange(input[2]);
-        node.setUpperRange(input[3]);
-        nodesInfo.add(node);
+				node.setIp(input[0]);
+				node.setPort(input[1]);
+				node.setLowRange(input[2]);
+				node.setUpperRange(input[3]);
+				nodesInfo.add(node);
 
-      }
-      reader.close();
+			}
+			reader.close();
 
-      portNum = Integer.valueOf(args[0]);
-      ipAddr = InetAddress.getLocalHost().getHostAddress();
-      handler = new KeyValueStoreHandler(ipAddr, portNum, nodesInfo);
-      processor = new KeyValueStore.Processor(handler);
+			portNum = Integer.valueOf(args[0]);
+			ipAddr = InetAddress.getLocalHost().getHostAddress();
+			handler = new KeyValueStoreHandler(ipAddr, portNum, nodesInfo);
+			processor = new KeyValueStore.Processor(handler);
 
-      Runnable simple = new Runnable() {
-        public void run() {
-          simple(processor);
-        }
-      };
-      new Thread(simple).start();
-    } catch (Exception x) {
-      x.printStackTrace();
-    }
-  }
+			Runnable simple = new Runnable() {
+				public void run() {
+					simple(processor);
+				}
+			};
+			new Thread(simple).start();
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+	}
 
-  public static void simple(KeyValueStore.Processor processor) {
-    try {
-      TServerTransport serverTransport = new TServerSocket(portNum);
-      TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
+	public static void simple(KeyValueStore.Processor processor) {
+		try {
+			TServerTransport serverTransport = new TServerSocket(portNum);
+			TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
 
-      System.out.println("Starting the simple server at " + ipAddr + ":" + portNum + " ...");
-      server.serve();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+			System.out.println("Starting the simple server at " + ipAddr + ":" + portNum + " ...");
+			server.serve();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

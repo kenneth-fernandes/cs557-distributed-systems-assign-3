@@ -1,7 +1,7 @@
 public class NodeInfo {
 
 	private String ip;
-	private String port;
+	private int port;
 	private String lowRange;
 	private String upperRange;
 
@@ -13,11 +13,11 @@ public class NodeInfo {
 		this.ip = ip;
 	}
 
-	public String getPort() {
+	public int getPort() {
 		return port;
 	}
 
-	public void setPort(String port) {
+	public void setPort(int port) {
 		this.port = port;
 	}
 
