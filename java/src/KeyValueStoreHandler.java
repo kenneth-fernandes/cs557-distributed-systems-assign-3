@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
-import keyvalstore.ConsistencyLevel;
 import keyvalstore.KeyValueStore;
 import keyvalstore.ReplicaID;
 import keyvalstore.Request;
@@ -28,7 +26,7 @@ import keyvalstore.SystemException;
 public class KeyValueStoreHandler implements KeyValueStore.Iface {
 	private String ipAddr;
 	private int portNum;
-	private Map<Integer, String> keyValueData;
+	private Map<Integer, Value> keyValueData;
 	private List<NodeInfo> nodesInfo;
 	private FileWriter oWriter;
 	private File ofile;
@@ -53,7 +51,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 				if (node.getIp().equals(ipAddr) && node.getPort() == portNum)
 					updateKeyStore(key, value);
 				else
-					doRpc(node.getIp(), node.getPort(), key, value, request);
+					doRpcPut(node.getIp(), node.getPort(), key, value, request);
 				primaryNodeIndex = (primaryNodeIndex + 1) % 4;
 			}
 
@@ -68,7 +66,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 		return "";
 	}
 
-	public void writeAheadLog(int key, String value) {
+	public void writeAheadLog(int key, String value, Long timestamp) {
 
 		try {
 			String path = System.getProperty("user.dir") + File.separator;
@@ -78,11 +76,11 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 				ofile.createNewFile();
 				oWriter = new FileWriter(ofile, true);
 
-				oWriter.write(System.currentTimeMillis() + " " + key + " " + value);
+				oWriter.write(timestamp + " " + key + " " + value);
 
 			} else {
 				oWriter = new FileWriter(ofile, true);
-				oWriter.write(System.currentTimeMillis() + " " + key + " " + value);
+				oWriter.write(timestamp + " " + key + " " + value);
 			}
 
 			oWriter.flush();
@@ -94,7 +92,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 
 	}
 
-	public boolean doRpc(String ip, int port, int key, String value, Request req) throws SystemException, TException {
+	public boolean doRpcPut(String ip, int port, int key, String value, Request req) throws SystemException, TException {
 
 		TTransport transport;
 		transport = new TSocket(ip, port);
@@ -118,10 +116,36 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 		return result;
 	}
 
-	public void updateKeyStore(int key, String value) {
+	public String doRpcGet(String ip, int port, int key, Request req) throws SystemException, TException {
 
-		writeAheadLog(key, value);
+		TTransport transport;
+		transport = new TSocket(ip, port);
+		transport.open();
 
+		TProtocol protocol = new TBinaryProtocol(transport);
+		KeyValueStore.Client client = new KeyValueStore.Client(protocol);
+
+		Request request = new Request();
+
+		request.setIsCoordinator(false);
+		request.setIsCoordinatorIsSet(true);
+
+		request.setLevel(req.getLevel());
+		request.setLevelIsSet(true);
+
+		ReplicaID replicaID = null;
+
+		String result = client.get(key, request, replicaID);
+		transport.close();
+		return result;
+	}
+	
+	public void updateKeyStore(int key, String valueIn) {
+		Long timestamp = System.currentTimeMillis();
+		writeAheadLog(key, valueIn, timestamp);
+		Value value = new Value();
+		value.setTimestamp(timestamp);
+		value.setValue(valueIn);
 		if (keyValueData.containsKey(key))
 			keyValueData.replace(key, value);
 		else
