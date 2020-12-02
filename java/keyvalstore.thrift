@@ -13,6 +13,7 @@ struct Request {
   1: required ConsistencyLevel level;
 	2: required bool isCoordinator;
   3: optional i64 timestamp;
+}
 
 struct ReplicaID {
   1: string id;
