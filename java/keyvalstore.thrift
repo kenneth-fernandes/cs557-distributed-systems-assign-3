@@ -15,6 +15,12 @@ struct Request {
   3: optional i64 timestamp;
 }
 
+struct Value {
+  1: i64 timestamp;
+	2: string value;
+	3: i32 key;
+}
+
 struct ReplicaID {
   1: string id;
   2: string ip;
@@ -28,6 +34,6 @@ service KeyValueStore {
   string get(1: i32 key, 2: Request request, 3: ReplicaID replicaID)
     throws (1: SystemException systemException),
 
-  string getHints()
+  Value getHints()
     throws (1: SystemException systemException),
 }
