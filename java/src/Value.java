@@ -2,6 +2,7 @@ public class Value {
 	
 	private Long timestamp;
 	private String value;
+	private int key;
 
 	public Long getTimestamp() {
 		return timestamp;
@@ -14,6 +15,12 @@ public class Value {
 	}
 	public void setValue(String value) {
 		this.value = value;
+	}
+	public int getKey() {
+		return key;
+	}
+	public void setKey(int key) {
+		this.key = key;
 	}
 	
 }
