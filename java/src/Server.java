@@ -36,7 +36,7 @@ public class Server {
 				String[] input = line.split(" ");
 
 				node.setIp(input[0]);
-				node.setPort(input[1]);
+				node.setPort(Integer.parseInt(input[1]));
 				node.setLowRange(input[2]);
 				node.setUpperRange(input[3]);
 				nodesInfo.add(node);
