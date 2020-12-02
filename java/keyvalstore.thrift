@@ -27,4 +27,7 @@ service KeyValueStore {
 
   string get(1: i32 key, 2: Request request, 3: ReplicaID replicaID)
     throws (1: SystemException systemException),
+
+  string getHints()
+    throws (1: SystemException systemException),
 }
