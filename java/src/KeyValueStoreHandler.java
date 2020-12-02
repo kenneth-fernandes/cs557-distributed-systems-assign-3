@@ -43,20 +43,21 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 	public boolean put(int key, String value, Request request, ReplicaID replicaID) throws SystemException, TException {
 		NodeInfo node;
 		boolean result = false;
-
 		if (request.isCoordinator) {
+			request.setTimestamp(System.currentTimeMillis());
+			request.setTimestampIsSet(true);
 			int primaryNodeIndex = key / 64;
 			for (int i = 0; i < 3; i++) {
 				node = nodesInfo.get(primaryNodeIndex);
 				if (node.getIp().equals(ipAddr) && node.getPort() == portNum)
-					updateKeyStore(key, value);
+					updateKeyStore(key, value, request.getTimestamp());
 				else
 					doRpcPut(node.getIp(), node.getPort(), key, value, request);
 				primaryNodeIndex = (primaryNodeIndex + 1) % 4;
 			}
 
 		} else {
-			updateKeyStore(key, value);
+			updateKeyStore(key, value, request.getTimestamp());
 		}
 		return result;
 	}
@@ -108,6 +109,9 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 
 		request.setLevel(req.getLevel());
 		request.setLevelIsSet(true);
+		
+		request.setTimestamp(req.getTimestamp());
+		request.setTimestampIsSet(true);
 
 		ReplicaID replicaID = null;
 
@@ -140,8 +144,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 		return result;
 	}
 	
-	public void updateKeyStore(int key, String valueIn) {
-		Long timestamp = System.currentTimeMillis();
+	public void updateKeyStore(int key, String valueIn, Long timestamp) {
 		writeAheadLog(key, valueIn, timestamp);
 		Value value = new Value();
 		value.setTimestamp(timestamp);
