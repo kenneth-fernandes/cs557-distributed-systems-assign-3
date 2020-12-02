@@ -16,7 +16,7 @@ public class KeyValueStore {
 
     public java.lang.String get(int key, Request request, ReplicaID replicaID) throws SystemException, org.apache.thrift.TException;
 
-    public java.lang.String getHints() throws SystemException, org.apache.thrift.TException;
+    public Value getHints() throws SystemException, org.apache.thrift.TException;
 
   }
 
@@ -26,7 +26,7 @@ public class KeyValueStore {
 
     public void get(int key, Request request, ReplicaID replicaID, org.apache.thrift.async.AsyncMethodCallback<java.lang.String> resultHandler) throws org.apache.thrift.TException;
 
-    public void getHints(org.apache.thrift.async.AsyncMethodCallback<java.lang.String> resultHandler) throws org.apache.thrift.TException;
+    public void getHints(org.apache.thrift.async.AsyncMethodCallback<Value> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -107,7 +107,7 @@ public class KeyValueStore {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "get failed: unknown result");
     }
 
-    public java.lang.String getHints() throws SystemException, org.apache.thrift.TException
+    public Value getHints() throws SystemException, org.apache.thrift.TException
     {
       send_getHints();
       return recv_getHints();
@@ -119,7 +119,7 @@ public class KeyValueStore {
       sendBase("getHints", args);
     }
 
-    public java.lang.String recv_getHints() throws SystemException, org.apache.thrift.TException
+    public Value recv_getHints() throws SystemException, org.apache.thrift.TException
     {
       getHints_result result = new getHints_result();
       receiveBase(result, "getHints");
@@ -229,15 +229,15 @@ public class KeyValueStore {
       }
     }
 
-    public void getHints(org.apache.thrift.async.AsyncMethodCallback<java.lang.String> resultHandler) throws org.apache.thrift.TException {
+    public void getHints(org.apache.thrift.async.AsyncMethodCallback<Value> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       getHints_call method_call = new getHints_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getHints_call extends org.apache.thrift.async.TAsyncMethodCall<java.lang.String> {
-      public getHints_call(org.apache.thrift.async.AsyncMethodCallback<java.lang.String> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getHints_call extends org.apache.thrift.async.TAsyncMethodCall<Value> {
+      public getHints_call(org.apache.thrift.async.AsyncMethodCallback<Value> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
       }
 
@@ -248,7 +248,7 @@ public class KeyValueStore {
         prot.writeMessageEnd();
       }
 
-      public java.lang.String getResult() throws SystemException, org.apache.thrift.TException {
+      public Value getResult() throws SystemException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -515,7 +515,7 @@ public class KeyValueStore {
       }
     }
 
-    public static class getHints<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getHints_args, java.lang.String> {
+    public static class getHints<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getHints_args, Value> {
       public getHints() {
         super("getHints");
       }
@@ -524,10 +524,10 @@ public class KeyValueStore {
         return new getHints_args();
       }
 
-      public org.apache.thrift.async.AsyncMethodCallback<java.lang.String> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+      public org.apache.thrift.async.AsyncMethodCallback<Value> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new org.apache.thrift.async.AsyncMethodCallback<java.lang.String>() { 
-          public void onComplete(java.lang.String o) {
+        return new org.apache.thrift.async.AsyncMethodCallback<Value>() { 
+          public void onComplete(Value o) {
             getHints_result result = new getHints_result();
             result.success = o;
             try {
@@ -575,7 +575,7 @@ public class KeyValueStore {
         return false;
       }
 
-      public void start(I iface, getHints_args args, org.apache.thrift.async.AsyncMethodCallback<java.lang.String> resultHandler) throws org.apache.thrift.TException {
+      public void start(I iface, getHints_args args, org.apache.thrift.async.AsyncMethodCallback<Value> resultHandler) throws org.apache.thrift.TException {
         iface.getHints(resultHandler);
       }
     }
@@ -3053,13 +3053,13 @@ public class KeyValueStore {
   public static class getHints_result implements org.apache.thrift.TBase<getHints_result, getHints_result._Fields>, java.io.Serializable, Cloneable, Comparable<getHints_result>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getHints_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
     private static final org.apache.thrift.protocol.TField SYSTEM_EXCEPTION_FIELD_DESC = new org.apache.thrift.protocol.TField("systemException", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getHints_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getHints_resultTupleSchemeFactory();
 
-    public @org.apache.thrift.annotation.Nullable java.lang.String success; // required
+    public @org.apache.thrift.annotation.Nullable Value success; // required
     public @org.apache.thrift.annotation.Nullable SystemException systemException; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -3130,7 +3130,7 @@ public class KeyValueStore {
     static {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Value.class)));
       tmpMap.put(_Fields.SYSTEM_EXCEPTION, new org.apache.thrift.meta_data.FieldMetaData("systemException", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SystemException.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
@@ -3141,7 +3141,7 @@ public class KeyValueStore {
     }
 
     public getHints_result(
-      java.lang.String success,
+      Value success,
       SystemException systemException)
     {
       this();
@@ -3154,7 +3154,7 @@ public class KeyValueStore {
      */
     public getHints_result(getHints_result other) {
       if (other.isSetSuccess()) {
-        this.success = other.success;
+        this.success = new Value(other.success);
       }
       if (other.isSetSystemException()) {
         this.systemException = new SystemException(other.systemException);
@@ -3172,11 +3172,11 @@ public class KeyValueStore {
     }
 
     @org.apache.thrift.annotation.Nullable
-    public java.lang.String getSuccess() {
+    public Value getSuccess() {
       return this.success;
     }
 
-    public getHints_result setSuccess(@org.apache.thrift.annotation.Nullable java.lang.String success) {
+    public getHints_result setSuccess(@org.apache.thrift.annotation.Nullable Value success) {
       this.success = success;
       return this;
     }
@@ -3227,7 +3227,7 @@ public class KeyValueStore {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((java.lang.String)value);
+          setSuccess((Value)value);
         }
         break;
 
@@ -3392,6 +3392,9 @@ public class KeyValueStore {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -3429,8 +3432,9 @@ public class KeyValueStore {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.success = iprot.readString();
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new Value();
+                struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -3462,7 +3466,7 @@ public class KeyValueStore {
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          oprot.writeString(struct.success);
+          struct.success.write(oprot);
           oprot.writeFieldEnd();
         }
         if (struct.systemException != null) {
@@ -3496,7 +3500,7 @@ public class KeyValueStore {
         }
         oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
-          oprot.writeString(struct.success);
+          struct.success.write(oprot);
         }
         if (struct.isSetSystemException()) {
           struct.systemException.write(oprot);
@@ -3508,7 +3512,8 @@ public class KeyValueStore {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
-          struct.success = iprot.readString();
+          struct.success = new Value();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
         if (incoming.get(1)) {
