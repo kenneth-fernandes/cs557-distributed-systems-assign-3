@@ -26,6 +26,15 @@ $> thrift -gen java keyvalstore.thrift
 ```commandline
 $> make
 ```
+- Update the config.txt with all the 4 servers ip address, port number at which they will be running.
+- Only change ip address and port number.
+```commandline
+[Ip_address] [Port_number] [Lower_range] [Upper_range]
+128.226.117.15 9090 0 63
+128.226.114.201 9091 64 127
+128.226.114.202 9092 128 191
+128.226.114.203 9093 192 255
+```
 - To execute the server, we need to open 4 terminals and goto the same path mentioned above
 - Execute the following commands:
 ```commandline
@@ -37,8 +46,9 @@ $> ./server.sh <PORT_NUMBER>
 - Execute the following commands:
 ```commandline
 $> chmod u+x client.sh
-$> ./server.sh <IP_ADDRESS> <PORT_NUMBER> <CONSISTENCY_LEVEL>
+$> ./client.sh <IP_ADDRESS> <PORT_NUMBER> <CONSISTENCY_LEVEL>
 ```
+
 ---
 
 ## Assignment completion status:
