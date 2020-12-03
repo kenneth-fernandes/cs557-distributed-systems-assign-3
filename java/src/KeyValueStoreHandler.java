@@ -90,7 +90,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 	@Override
 	public Value get(int key, Request request, ReplicaID replicaID) throws SystemException, TException {
 		
-		callForHints();		
+			
 		
 		NodeInfo node;
 		Value value = null;
@@ -98,7 +98,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 		int dataRetrievalCount = 0;
 
 		if (request.isCoordinator) {
-			
+			callForHints();	
 			long timeStamp = 0;
 			int primaryNodeIndex = key / 64;
 
@@ -109,22 +109,20 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 
 					value = keyValueData.get(key);
 
-					if (null != value && value.getTimestamp() > timeStamp) {
+					if (null != value && value.getTimestamp() >= timeStamp) {
 						timeStamp = value.getTimestamp();
 						latestValue = value.getValue();
 						dataRetrievalCount++;
 					}
 
 				} else {
-					value = doRpcGet(node.getIp(), node.getPort(), key, request);
+					Value valueReturned = doRpcGet(node.getIp(), node.getPort(), key, request);
 
-					if (null != value && value.getTimestamp() > timeStamp) {
-						timeStamp = value.getTimestamp();
-						latestValue = value.getValue();
+					if (null != valueReturned && valueReturned.getTimestamp() >= timeStamp) {
+						timeStamp = valueReturned.getTimestamp();
+						latestValue = valueReturned.getValue();
 						dataRetrievalCount++;
-					} else {						
-						value.setTimestamp(timeStamp);
-						value.setValue(latestValue);
+						value = valueReturned;
 					}
 				}
 				primaryNodeIndex = (primaryNodeIndex + 1) % 4;
@@ -146,8 +144,13 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 
 	@Override
 	public Value getHints(String ip, int port) throws SystemException, TException {
-
-		return hint.get(ip + ":" + port);
+		Value val = new Value();
+		if(null != hint.get(ip + ":" + port)) {
+			val.setKey(hint.get(ip + ":" + port).getKey());
+			val.setTimestamp(hint.get(ip + ":" + port).getTimestamp());
+			val.setValue(hint.get(ip + ":" + port).getValue());
+		}
+		return val;
 	}
 
 	public void writeAheadLog(int key, String value, Long timestamp) {
@@ -215,7 +218,10 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 
 			ThriftConnection conn = getConn(port, ip);
 			KeyValueStore.Client client = conn.getClient();
-
+			
+			if(null == client)
+				return false;
+			
 			Request request = new Request();
 
 			request.setIsCoordinator(false);
@@ -240,10 +246,15 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 	}
 
 	public Value doRpcGet(String ip, int port, int key, Request req) throws SystemException, TException {
-
+		
+		Value result = null; 
+		
 		ThriftConnection conn = getConn(port, ip);
 		KeyValueStore.Client client = conn.getClient();
-
+		
+		if(null == client)
+			return result;
+		
 		Request request = new Request();
 
 		request.setIsCoordinator(false);
@@ -254,7 +265,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 
 		ReplicaID replicaID = null;
 
-		Value result = client.get(key, request, replicaID);
+		result = client.get(key, request, replicaID);
 		conn.getTransport().close();
 		return result;
 	}
@@ -294,7 +305,7 @@ public class KeyValueStoreHandler implements KeyValueStore.Iface {
 				if (null != conn.getTransport()) {
 					KeyValueStore.Client client = conn.getClient();
 					val = client.getHints(ipAddr, portNum);
-					if (null != val)
+					if (null != val.getValue())
 						updateKeyStore(val.getKey(), val.getValue(), val.getTimestamp());
 					conn.getTransport().close();
 				}
