@@ -21,6 +21,7 @@ public class Client {
 				perform(client, ConsistencyLevel.ONE);
 			else
 				perform(client, ConsistencyLevel.QUORUM);
+			transport.close();
 		} catch (TException e) {
 			e.printStackTrace();
 		}
@@ -36,12 +37,21 @@ public class Client {
 
 		ReplicaID replicaID = null;
 		boolean flag = client.put(64, "First key value for 23", request, replicaID);
-		System.out.println("Put returned value: " + flag);
-		flag = client.put(23, "I am the changed value", request, replicaID);
-		System.out.println("Put returned value again: " + flag);
+		if(flag)
+			System.out.println("Put was successful ");
+		else
+			System.out.println("Put failed");
+		
+		flag = client.put(64, "I am the changed value", request, replicaID);
+		
+		if(flag)
+			System.out.println("Put was successful ");
+		else
+			System.out.println("Put failed");
+		
 		Value val = client.get(64, request, replicaID);
 
-		System.out.println("Value returned: " + val.getValue());
+		System.out.println("Value returned for key 64: " + val.getValue());
 
 	}
 }
